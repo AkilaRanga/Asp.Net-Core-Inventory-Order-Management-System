@@ -1,6 +1,7 @@
 using coderush.Data;
 using coderush.Models;
 using coderush.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 IConfigurationSection identityDefaultOptionsConfigurationSection = builder.Configuration.GetSection("IdentityDefaultOptions");
 
 builder.Services.Configure<IdentityDefaultOptions>(identityDefaultOptionsConfigurationSection);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(cookieOptions => { cookieOptions.LoginPath = "/"; cookieOptions.ExpireTimeSpan = TimeSpan.FromMinutes(20); cookieOptions.SlidingExpiration = true; cookieOptions.AccessDeniedPath = "/Forbidden/"; });
 
 var identityDefaultOptions = identityDefaultOptionsConfigurationSection.Get<IdentityDefaultOptions>();
 builder.Services.AddControllersWithViews();
@@ -54,6 +57,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     // Cookie settings
     options.Cookie.HttpOnly = identityDefaultOptions.CookieHttpOnly;
     //options.Cookie.Expiration = TimeSpan.FromDays(identityDefaultOptions.CookieExpiration);
+    options.ExpireTimeSpan = TimeSpan.FromDays(identityDefaultOptions.CookieExpiration);
     options.LoginPath = identityDefaultOptions.LoginPath; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
     options.LogoutPath = identityDefaultOptions.LogoutPath; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
     options.AccessDeniedPath = identityDefaultOptions.AccessDeniedPath; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied

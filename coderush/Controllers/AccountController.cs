@@ -66,6 +66,7 @@ namespace coderush.Controllers
                 {
                     _logger.LogInformation("User logged in.");
                     return RedirectToLocal(returnUrl);
+
                 }
                 if (result.RequiresTwoFactor)
                 {

@@ -44,7 +44,7 @@ namespace coderush.Controllers
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UserProfile()
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
