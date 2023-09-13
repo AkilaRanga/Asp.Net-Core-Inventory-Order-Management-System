@@ -12,6 +12,7 @@ namespace coderush.Controllers
     {
         public IActionResult Index()
         {
+            //
             return RedirectToAction("UserProfile", "UserRole");
         }
 
